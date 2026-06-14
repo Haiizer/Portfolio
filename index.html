@@ -107,6 +107,7 @@ const DEFAULT = {
   ],
   pea:[
     {id:"world_pea", name:"MSCI World Swap PEA",tag:"Bouclier fiscal",   tagType:"active",  value:302.18,  invested:281.00,  monthly:50,  active:true,  hasPnl:true},
+    {id:"tr_epargne", name:"Compte Épargne TR", tag:"Rémunéré ~3%",         tagType:"safe",    value:0,       invested:0,       monthly:0,   active:true,  hasPnl:false},
   ],
   amundi:[
     {id:"pee",       name:"Actions Thales",  tag:"PEE",                   tagType:"pee",     value:0,       invested:0,       monthly:0,   active:true,  hasPnl:true},
@@ -115,11 +116,12 @@ const DEFAULT = {
   ca:[
     {id:"livretj",   name:"Livret Jeune",    tag:"Épargne liquide",       tagType:"safe",    value:0,       invested:0,       monthly:0,   active:true,  hasPnl:false},
     {id:"livreta",   name:"Livret A",        tag:"Épargne liquide",       tagType:"safe",    value:0,       invested:0,       monthly:0,   active:true,  hasPnl:false},
+    {id:"ca_epargne",  name:"Compte Épargne CA", tag:"Épargne liquide",      tagType:"safe",    value:0,       invested:0,       monthly:0,   active:true,  hasPnl:false},
   ],
   lastUpdated: "15/06/2026",
 };
 
-let data = JSON.parse(localStorage.getItem("henzo_v3")||"null") || DEFAULT;
+let data = JSON.parse(localStorage.getItem("henzo_v4")||"null") || DEFAULT;
 let tab = "dashboard";
 let modal = null;
 
@@ -134,7 +136,7 @@ const secTotal = s => data[s].reduce((a,i)=>a+i.value,0);
 
 function save(){
   data.lastUpdated = new Date().toLocaleDateString("fr-FR");
-  localStorage.setItem("henzo_v3",JSON.stringify(data));
+  localStorage.setItem("henzo_v4",JSON.stringify(data));
   const t=document.getElementById("toast");
   t.classList.add("show");
   setTimeout(()=>t.classList.remove("show"),1500);
@@ -277,9 +279,9 @@ function render(){
 
   } else if(tab==="pea"){
     content=`<div class="section">
-      <div class="section-title">PEA · ${fmt(secTotal("pea"))}</div>
+      <div class="section-title">PEA & Épargne TR · ${fmt(secTotal("pea"))}</div>
       ${data.pea.map(i=>renderCard("pea",i)).join("")}
-      <div class="info-box green">💡 Objectif : 200€/mois · Plafond 150 000€ · Fiscalité 17,2% après 5 ans · Horloge lancée déc. 2025 → libre déc. 2030</div>
+      <div class="info-box green">💡 PEA : objectif 200€/mois · Fiscalité 17,2% après 5 ans · Libre déc. 2030 · Compte Épargne TR : ~3% brut rémunéré</div>
     </div>`;
 
   } else if(tab==="amundi"){
@@ -293,7 +295,7 @@ function render(){
     content=`<div class="section">
       <div class="section-title">Crédit Agricole · ${fmt(secTotal("ca"))}</div>
       ${data.ca.map(i=>renderCard("ca",i)).join("")}
-      <div class="info-box orange">🏦 Livret Jeune : taux 3% max 1 600€ jusqu'à 25 ans · Livret A : taux 2,4% · Capital garanti · Épargne de précaution</div>
+      <div class="info-box orange">🏦 Livret Jeune : 3% · max 1 600€ · jusqu'à 25 ans · Livret A : 2,4% · Compte Épargne CA : taux variable · Capital garanti</div>
     </div>`;
 
   } else if(tab==="projections"){
@@ -342,7 +344,7 @@ function render(){
       <div class="tabs">
         <button class="tab ${tab==="dashboard"?"active":""}" onclick="setTab('dashboard')">Aperçu</button>
         <button class="tab ${tab==="cto"?"active":""}" onclick="setTab('cto')">CTO</button>
-        <button class="tab ${tab==="pea"?"active":""}" onclick="setTab('pea')">PEA</button>
+        <button class="tab ${tab==="pea"?"active":""}" onclick="setTab('pea')">PEA & Épargne</button>
         <button class="tab ${tab==="amundi"?"active":""}" onclick="setTab('amundi')">Amundi</button>
         <button class="tab ${tab==="ca"?"active":""}" onclick="setTab('ca')">Livrets</button>
         <button class="tab ${tab==="projections"?"active":""}" onclick="setTab('projections')">Projections</button>
