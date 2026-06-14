@@ -299,36 +299,7 @@ function render(){
     </div>`;
 
   } else if(tab==="projections"){
-    const n=data.cto.find(i=>i.id==="nasdaq");
-    const s=data.cto.find(i=>i.id==="semis");
-    const p=data.pea.find(i=>i.id==="world_pea");
-    const nm=120,sm=30,pm=200;
-    const sc=[
-      {key:"pessimiste",label:"Pessimiste",nr:6, sr:5, pr:5},
-      {key:"realiste",  label:"Réaliste",  nr:12,sr:13,pr:8},
-      {key:"optimiste", label:"Optimiste", nr:15,sr:18,pr:10},
-    ];
-    content=`<div class="section">
-      <div class="section-title">Projections à 20 ans</div>
-      <div style="font-size:.68rem;color:#555;margin-bottom:16px">Hypothèse : 120€ Nasdaq · 30€ Semis · 200€ PEA · Capitaux actuels inclus</div>
-      ${sc.map(sc=>{
-        const nG=project(n.value,nm,sc.nr,20),nI=n.value+nm*240;
-        const sG=project(s.value,sm,sc.sr,20),sI=s.value+sm*240;
-        const pG=project(p.value,pm,sc.pr,20),pI=p.value+pm*240;
-        const nN=nG-(nG-nI)*.30,sN=sG-(sG-sI)*.30,pN=pG-(pG-pI)*.172;
-        const tot=nN+sN+pN;
-        return `<div class="proj-card ${sc.key}">
-          <div class="proj-header">
-            <span class="proj-label">${sc.label}</span>
-            <span class="proj-total ${sc.key}">${Math.round(tot/1000)}k€ net</span>
-          </div>
-          <div class="proj-line"><span>Nasdaq (${sc.nr}%/an · flat tax 30%)</span><span>${Math.round(nN/1000)}k€</span></div>
-          <div class="proj-line"><span>Semis (${sc.sr}%/an · flat tax 30%)</span><span>${Math.round(sN/1000)}k€</span></div>
-          <div class="proj-line"><span>PEA World (${sc.pr}%/an · PS 17,2%)</span><span>${Math.round(pN/1000)}k€</span></div>
-        </div>`;
-      }).join("")}
-      <div class="info-box green" style="margin-top:4px">+ Amundi et Livrets non inclus (variables). Chaque +50€/mois supplémentaire = ~30-60k€ de plus selon scénario.</div>
-    </div>`;
+    content=`<div class="section" id="proj-section">${renderProjections()}</div>`;
   }
 
   document.getElementById("app").innerHTML=`
@@ -355,6 +326,118 @@ function render(){
 }
 
 function setTab(t){tab=t;modal=null;render()}
+
+// ── Projections dynamiques ──
+let projYear = 20;
+
+function updateProj(val){
+  projYear = parseInt(val);
+  const el = document.getElementById("proj-section");
+  if(el) el.innerHTML = renderProjections();
+}
+
+function calcTotal(yrs, rates){
+  // Tous les ETF CTO avec leurs taux selon scénario
+  const positions = [
+    {id:"nasdaq",    r:rates.tech, tax:0.30},
+    {id:"semis",     r:rates.tech, tax:0.30},
+    {id:"ai",        r:rates.tech, tax:0.30},
+    {id:"world_cto", r:rates.world,tax:0.30},
+    {id:"sp500",     r:rates.world,tax:0.30},
+    {id:"world_pea", r:rates.pea,  tax:0.172},
+  ];
+  let net=0, inv=0;
+  positions.forEach(pos=>{
+    const item=[...data.cto,...data.pea].find(i=>i.id===pos.id);
+    if(!item||item.value<=0) return;
+    const pmt=item.monthly||0;
+    const gross=project(item.value,pmt,pos.r,yrs);
+    const invested=item.value+pmt*yrs*12;
+    net += gross-(gross-invested)*pos.tax;
+    inv += invested;
+  });
+  return {net, inv};
+}
+
+function renderProjections(){
+  const yrs = projYear;
+  const scenarios=[
+    {key:"pessimiste",label:"Pessimiste",emoji:"🐢",color:"#ff9800",rates:{tech:6,  world:5, pea:5}},
+    {key:"realiste",  label:"Réaliste",  emoji:"📈",color:"#00bcd4",rates:{tech:12, world:9, pea:8}},
+    {key:"optimiste", label:"Optimiste", emoji:"🚀",color:"#00e676",rates:{tech:15, world:11,pea:10}},
+  ];
+
+  const results = scenarios.map(sc=>({sc, ...calcTotal(yrs, sc.rates)}));
+
+  // Barre de progression relative au max optimiste
+  const maxNet = results[2].net;
+
+  // Sparkline CSS — points de la courbe réaliste sur 5 jalons
+  const milestones=[0,Math.round(yrs*0.25),Math.round(yrs*0.5),Math.round(yrs*0.75),yrs];
+  const pts = milestones.map(y=>calcTotal(Math.max(y,0.01),scenarios[1].rates).net);
+
+  // Total investi avec tous les ETF
+  const allItems=[...data.cto,...data.pea].filter(i=>i.value>0);
+  const totalVerse=allItems.reduce((s,i)=>s+i.value+i.monthly*yrs*12,0);
+
+  const fk = v => v>=1000 ? Math.round(v/1000)+'k' : Math.round(v)+'';
+
+  return `
+    <div class="section-title">Projections — dans <span style="color:#00e676">${yrs} an${yrs>1?'s':''}</span></div>
+
+    <div style="background:#111;border-radius:14px;padding:16px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:.65rem;color:#555;text-transform:uppercase;letter-spacing:1px">Horizon de projection</span>
+        <span style="font-size:1.2rem;font-weight:800;color:#00e676">${yrs} ans</span>
+      </div>
+      <input type="range" min="1" max="30" value="${yrs}" step="1"
+        style="width:100%;accent-color:#00e676;cursor:pointer;height:4px"
+        oninput="updateProj(this.value)" />
+      <div style="display:flex;justify-content:space-between;margin-top:6px">
+        <span style="font-size:.6rem;color:#333">1 an</span>
+        <span style="font-size:.6rem;color:#333">30 ans</span>
+      </div>
+    </div>
+
+    <div style="background:#111;border-radius:14px;padding:12px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:.72rem;color:#888">Tous ETF inclus · Total versé sur ${yrs} an${yrs>1?'s':''}</span>
+      <span style="font-size:.9rem;font-weight:700;color:#ccc">${fmt(totalVerse)}</span>
+    </div>
+
+    <div style="background:#111;border-radius:14px;padding:14px 16px;margin-bottom:14px">
+      <div style="font-size:.62rem;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Jalons réalistes (12%/an tech · 9% world · 8% PEA)</div>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:60px">
+        ${pts.map((v,i)=>{
+          const h=Math.round((v/Math.max(...pts))*100);
+          const yr=milestones[i];
+          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div style="font-size:.55rem;color:#00e676;font-weight:700">${fk(v)}€</div>
+            <div style="width:100%;background:#00e676;border-radius:3px 3px 0 0;height:${h}%;opacity:${0.3+i*0.15}"></div>
+            <div style="font-size:.55rem;color:#555">${yr===0?'Auj.':yr+'a'}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    ${results.map(r=>`
+    <div class="proj-card ${r.sc.key}">
+      <div class="proj-header">
+        <span class="proj-label">${r.sc.emoji} ${r.sc.label}</span>
+        <span class="proj-total ${r.sc.key}">${fk(r.net)}€ net</span>
+      </div>
+      <div class="proj-line"><span>Tech CTO (Nasdaq+Semis+AI · ${r.sc.rates.tech}%/an · -30%)</span><span style="color:#ccc"></span></div>
+      <div class="proj-line"><span>World CTO (MSCI W+SP500 · ${r.sc.rates.world}%/an · -30%)</span><span style="color:#ccc"></span></div>
+      <div class="proj-line"><span>PEA World (${r.sc.rates.pea}%/an · -17,2%)</span><span style="color:#ccc"></span></div>
+      <div class="proj-line" style="border-top:1px solid #2a2a2a;margin-top:6px;padding-top:8px">
+        <span style="color:#fff;font-weight:600">Gain net total</span>
+        <span style="color:${r.sc.color};font-weight:800">+${fk(r.net-totalVerse)}€</span>
+      </div>
+    </div>`).join('')}
+
+    <div class="info-box green" style="margin-top:4px">5 ETF CTO + PEA inclus · Amundi et Livrets exclus · Données recalculées depuis ton portfolio en temps réel</div>
+  `;
+}
+
 render();
 </script>
 </body>
