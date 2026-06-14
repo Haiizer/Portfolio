@@ -1,359 +1,358 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <title>Mon Portfolio</title>
-
-<!-- PWA iOS -->
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Portfolio" />
-<meta name="theme-color" content="#080808" />
-
-<!-- PWA Manifest inline -->
-<link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22Mon%20Portfolio%22%2C%22short_name%22%3A%22Portfolio%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23080808%22%2C%22theme_color%22%3A%22%23080808%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%2527http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%2527%2520viewBox%3D%25270%25200%2520100%2520100%2527%253E%253Crect%2520width%3D%2527100%2527%2520height%3D%2527100%2527%2520rx%3D%252720%2527%2520fill%3D%2527%2523080808%2527%2F%253E%253Ctext%2520y%3D%2527.9em%2527%2520font-size%3D%252780%2527%253E%25F0%259F%2593%2588%253C%2F%2574%2565%2578%2574%253E%253C%2F%2573%2576%2567%253E%22%2C%22sizes%22%3A%22192x192%22%7D%5D%7D" />
-
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Portfolio"/>
+<meta name="theme-color" content="#080808"/>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; background: #080808; color: #f0f0f0; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; overscroll-behavior: none; }
-  
-  #app { max-width: 480px; margin: 0 auto; min-height: 100%; padding-bottom: 90px; }
-
-  /* HEADER */
-  .header { padding: 56px 20px 0; border-bottom: 1px solid #1a1a1a; background: #080808; position: sticky; top: 0; z-index: 10; }
-  .hero-label { font-size: 0.65rem; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; }
-  .hero-value { font-size: 2.4rem; font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: -1px; }
-  .hero-badge { display: inline-flex; align-items: center; gap: 4px; background: #0d2b1a; border-radius: 20px; padding: 4px 12px; margin-top: 8px; }
-  .hero-badge span { color: #00e676; font-size: 0.82rem; font-weight: 700; }
-  .meta-row { display: flex; gap: 8px; margin-top: 14px; padding-bottom: 16px; }
-  .meta-card { flex: 1; background: #111; border-radius: 10px; padding: 10px 12px; }
-  .meta-label { font-size: 0.6rem; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
-  .meta-value { font-size: 0.95rem; font-weight: 700; color: #ccc; }
-  .meta-value.green { color: #00e676; }
-
-  /* TABS */
-  .tabs { display: flex; padding: 0 20px; }
-  .tab { flex: 1; padding: 10px 0; text-align: center; font-size: 0.72rem; font-weight: 400; color: #555; border: none; background: none; border-bottom: 2px solid #1a1a1a; cursor: pointer; transition: all 0.15s; }
-  .tab.active { color: #00e676; font-weight: 700; border-bottom-color: #00e676; }
-
-  /* SECTION */
-  .section { padding: 20px 20px 0; }
-  .section-title { font-size: 0.62rem; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
-
-  /* CARDS */
-  .card { background: #111; border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
-  .card-inner { padding: 14px 16px; }
-  .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
-  .card-name { font-size: 0.9rem; font-weight: 600; color: #fff; }
-  .card-tag { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 4px; padding: 2px 7px; margin-top: 4px; display: inline-block; }
-  .card-tag.active { color: #00e676; background: #0d2b1a; }
-  .card-tag.inactive { color: #555; background: #1a1a1a; }
-  .card-right { text-align: right; }
-  .card-value { font-size: 1.05rem; font-weight: 800; color: #fff; }
-  .card-perf { font-size: 0.72rem; font-weight: 600; margin-top: 2px; }
-  .card-perf.up { color: #00e676; }
-  .card-perf.down { color: #ff5252; }
-  .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #1a1a1a; }
-  .gain-text { font-size: 0.75rem; }
-  .gain-text.up { color: #00e676; }
-  .gain-text.down { color: #ff5252; }
-  .edit-btn { font-size: 0.68rem; color: #888; background: #1a1a1a; border: none; border-radius: 6px; padding: 5px 12px; cursor: pointer; }
-
-  /* EDIT ROW */
-  .edit-row { padding: 10px 16px; background: #0d1a0d; display: flex; gap: 8px; align-items: center; }
-  .edit-row input { flex: 1; background: #0d0d0d; border: 1px solid #00e676; border-radius: 8px; color: #fff; font-size: 1rem; padding: 8px 12px; outline: none; width: 100%; }
-  .btn-confirm { background: #00e676; color: #000; font-weight: 700; border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 0.82rem; white-space: nowrap; }
-  .btn-cancel { background: #1a1a1a; color: #888; border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer; font-size: 0.82rem; }
-
-  /* PROGRESS */
-  .progress-bar { height: 4px; background: #1a1a1a; border-radius: 2px; margin-top: 8px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, #00e676, #00bcd4); border-radius: 2px; transition: width 0.4s ease; }
-
-  /* SPLIT CARDS */
-  .split-row { display: flex; gap: 10px; margin-bottom: 12px; }
-  .split-card { flex: 1; background: #111; border-radius: 14px; padding: 14px; }
-  .split-card.green-border { border-left: 3px solid #00e676; }
-  .split-card.blue-border { border-left: 3px solid #00bcd4; }
-
-  /* PROJECTIONS */
-  .proj-card { background: #111; border-radius: 14px; padding: 16px; margin-bottom: 10px; }
-  .proj-card.pessimiste { border-left: 3px solid #ff9800; }
-  .proj-card.realiste { border-left: 3px solid #00bcd4; }
-  .proj-card.optimiste { border-left: 3px solid #00e676; }
-  .proj-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .proj-label { font-weight: 700; color: #fff; font-size: 0.9rem; }
-  .proj-total { font-weight: 800; font-size: 1.2rem; }
-  .proj-total.pessimiste { color: #ff9800; }
-  .proj-total.realiste { color: #00bcd4; }
-  .proj-total.optimiste { color: #00e676; }
-  .proj-line { display: flex; justify-content: space-between; padding: 6px 0; border-top: 1px solid #1a1a1a; }
-  .proj-line span:first-child { font-size: 0.73rem; color: #888; }
-  .proj-line span:last-child { font-size: 0.73rem; color: #ccc; font-weight: 600; }
-
-  /* PERF TABLE */
-  .perf-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #111; }
-  .perf-row span:first-child { font-size: 0.8rem; color: #aaa; }
-  .perf-row .perf-val { font-size: 0.82rem; font-weight: 700; }
-
-  /* INFO BOX */
-  .info-box { background: #0d1a0d; border-radius: 12px; padding: 12px 16px; margin-top: 10px; font-size: 0.72rem; color: #00e676; line-height: 1.5; }
-
-  /* MONTHLY TABLE */
-  .monthly-card { background: #111; border-radius: 14px; padding: 16px; }
-  .monthly-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #1a1a1a; }
-  .monthly-row:last-child { border-bottom: none; }
-  .monthly-row span:first-child { font-size: 0.82rem; color: #ccc; }
-  .monthly-total-row { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; margin-top: 4px; border-top: 1px solid #333; }
-
-  /* TOAST */
-  .toast { position: fixed; top: 60px; right: 16px; background: #00e676; color: #000; font-weight: 700; font-size: 0.72rem; padding: 8px 14px; border-radius: 20px; z-index: 999; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
-  .toast.show { opacity: 1; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#080808;color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;overscroll-behavior:none}
+#app{max-width:480px;margin:0 auto;min-height:100%;padding-bottom:30px}
+.header{padding:52px 20px 0;border-bottom:1px solid #1a1a1a;background:#080808;position:sticky;top:0;z-index:10}
+.hero-label{font-size:.62rem;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px}
+.hero-value{font-size:2.3rem;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-1px}
+.hero-badge{display:inline-flex;align-items:center;gap:4px;background:#0d2b1a;border-radius:20px;padding:4px 12px;margin-top:8px}
+.hero-badge span{color:#00e676;font-size:.8rem;font-weight:700}
+.meta-row{display:flex;gap:8px;margin-top:14px;padding-bottom:16px}
+.meta-card{flex:1;background:#111;border-radius:10px;padding:10px 12px}
+.meta-label{font-size:.58rem;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.meta-value{font-size:.9rem;font-weight:700;color:#ccc}
+.meta-value.green{color:#00e676}
+.tabs{display:flex;padding:0 20px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:10px 14px;font-size:.7rem;font-weight:400;color:#555;border:none;background:none;border-bottom:2px solid #1a1a1a;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tab.active{color:#00e676;font-weight:700;border-bottom-color:#00e676}
+.section{padding:20px 20px 0}
+.section-title{font-size:.6rem;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.card{background:#111;border-radius:14px;margin-bottom:8px;overflow:hidden;cursor:pointer;transition:background .15s}
+.card:active{background:#161616}
+.card-inner{padding:14px 16px}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.card-name{font-size:.88rem;font-weight:600;color:#fff}
+.card-tag{font-size:.56rem;text-transform:uppercase;letter-spacing:.5px;border-radius:4px;padding:2px 7px;margin-top:4px;display:inline-block}
+.card-tag.active{color:#00e676;background:#0d2b1a}
+.card-tag.inactive{color:#555;background:#1a1a1a}
+.card-tag.savings{color:#a78bfa;background:#1a102b}
+.card-tag.pee{color:#a78bfa;background:#1a102b}
+.card-tag.pereco{color:#c4b5fd;background:#160d26}
+.card-tag.safe{color:#ff9800;background:#2b1e0d}
+.card-right{text-align:right}
+.card-value{font-size:1rem;font-weight:800;color:#fff}
+.card-perf{font-size:.7rem;font-weight:600;margin-top:2px}
+.card-perf.up{color:#00e676}
+.card-perf.neutral{color:#888}
+.card-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid #1a1a1a}
+.gain-text{font-size:.72rem}
+.gain-text.up{color:#00e676}
+.gain-text.neutral{color:#888}
+.monthly-badge{font-size:.68rem;color:#555;background:#1a1a1a;border-radius:6px;padding:3px 8px}
+.monthly-badge.on{color:#00e676;background:#0d2b1a}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(6px)}
+.modal{background:#141414;border-radius:24px 24px 0 0;padding:24px 20px 44px;width:100%;max-width:480px;border-top:1px solid #222}
+.modal-handle{width:36px;height:4px;background:#333;border-radius:2px;margin:0 auto 20px}
+.modal-title{font-size:1rem;font-weight:700;color:#fff;margin-bottom:4px}
+.modal-sub{font-size:.72rem;color:#555;margin-bottom:22px}
+.modal-field{margin-bottom:14px}
+.modal-field label{font-size:.63rem;color:#888;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:7px}
+.modal-field input{width:100%;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:12px;color:#fff;font-size:1.1rem;padding:12px 16px;outline:none;transition:border-color .15s}
+.modal-field input:focus{border-color:#00e676}
+.modal-hint{font-size:.63rem;color:#444;margin-top:5px}
+.modal-actions{display:flex;gap:10px;margin-top:10px}
+.btn-save{flex:1;background:#00e676;color:#000;font-weight:700;border:none;border-radius:12px;padding:14px;cursor:pointer;font-size:.9rem}
+.btn-close{background:#1a1a1a;color:#888;border:none;border-radius:12px;padding:14px 20px;cursor:pointer;font-size:.9rem}
+.proj-card{background:#111;border-radius:14px;padding:16px;margin-bottom:10px}
+.proj-card.pessimiste{border-left:3px solid #ff9800}
+.proj-card.realiste{border-left:3px solid #00bcd4}
+.proj-card.optimiste{border-left:3px solid #00e676}
+.proj-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.proj-label{font-weight:700;color:#fff;font-size:.88rem}
+.proj-total{font-weight:800;font-size:1.2rem}
+.proj-total.pessimiste{color:#ff9800}
+.proj-total.realiste{color:#00bcd4}
+.proj-total.optimiste{color:#00e676}
+.proj-line{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid #1a1a1a}
+.proj-line span:first-child{font-size:.7rem;color:#888}
+.proj-line span:last-child{font-size:.7rem;color:#ccc;font-weight:600}
+.perf-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #111}
+.perf-row span:first-child{font-size:.78rem;color:#aaa}
+.info-box{border-radius:12px;padding:12px 16px;margin-top:10px;font-size:.7rem;line-height:1.6}
+.info-box.green{background:#0d2b1a;color:#00e676}
+.info-box.orange{background:#2b1a0d;color:#ff9800}
+.info-box.purple{background:#1a102b;color:#a78bfa}
+.progress-bar{height:4px;background:#1a1a1a;border-radius:2px;margin-top:8px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;transition:width .4s ease}
+.monthly-card{background:#111;border-radius:14px;padding:16px}
+.monthly-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1a1a1a}
+.monthly-row:last-child{border-bottom:none}
+.toast{position:fixed;top:60px;right:16px;background:#00e676;color:#000;font-weight:700;font-size:.7rem;padding:8px 14px;border-radius:20px;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <div class="toast" id="toast">✓ Sauvegardé</div>
-
 <script>
-const DEFAULT_DATA = {
-  cto: [
-    { id:"nasdaq", name:"NASDAQ100 USD", tag:"Moteur principal", value:1543.73, invested:1283.33, monthly:120, active:true },
-    { id:"semis",  name:"MSCI Semis ESG", tag:"Conviction sectorielle", value:1256.51, invested:651.02, monthly:30,  active:true },
-    { id:"ai",     name:"AI & Big Data",  tag:"À l'abandon", value:530.81,  invested:324.50, monthly:0,   active:false },
-    { id:"world_cto", name:"Core MSCI World", tag:"À l'abandon", value:391.76, invested:324.87, monthly:0, active:false },
-    { id:"sp500",  name:"Core S&P 500",   tag:"À l'abandon", value:386.78,  invested:325.10, monthly:0,   active:false },
+// ── Données par défaut (mises à jour depuis les captures du 15/06/2026) ──
+const DEFAULT = {
+  cto:[
+    {id:"nasdaq",    name:"NASDAQ100 USD",   tag:"Moteur principal",      tagType:"active",  value:1499.09, invested:1283.33, monthly:120, active:true,  hasPnl:true},
+    {id:"semis",     name:"MSCI Semis ESG",  tag:"Conviction sectorielle",tagType:"active",  value:1202.18, invested:651.02,  monthly:30,  active:true,  hasPnl:true},
+    {id:"ai",        name:"AI & Big Data",   tag:"À l'abandon",           tagType:"inactive",value:496.65,  invested:324.50,  monthly:0,   active:false, hasPnl:true},
+    {id:"world_cto", name:"Core MSCI World", tag:"À l'abandon",           tagType:"inactive",value:387.50,  invested:324.87,  monthly:0,   active:false, hasPnl:true},
+    {id:"sp500",     name:"Core S&P 500",    tag:"À l'abandon",           tagType:"inactive",value:379.48,  invested:325.10,  monthly:0,   active:false, hasPnl:true},
   ],
-  pea: [
-    { id:"world_pea", name:"MSCI World Swap PEA", tag:"Bouclier fiscal", value:299.30, invested:281.00, monthly:50, active:true },
+  pea:[
+    {id:"world_pea", name:"MSCI World Swap PEA",tag:"Bouclier fiscal",   tagType:"active",  value:302.18,  invested:281.00,  monthly:50,  active:true,  hasPnl:true},
   ],
-  lastUpdated: new Date().toLocaleDateString("fr-FR"),
+  amundi:[
+    {id:"pee",       name:"Actions Thales",  tag:"PEE",                   tagType:"pee",     value:0,       invested:0,       monthly:0,   active:true,  hasPnl:true},
+    {id:"pereco",    name:"Actions Euromonde",tag:"PERECO",               tagType:"pereco",  value:0,       invested:0,       monthly:0,   active:true,  hasPnl:true},
+  ],
+  ca:[
+    {id:"livretj",   name:"Livret Jeune",    tag:"Épargne liquide",       tagType:"safe",    value:0,       invested:0,       monthly:0,   active:true,  hasPnl:false},
+    {id:"livreta",   name:"Livret A",        tag:"Épargne liquide",       tagType:"safe",    value:0,       invested:0,       monthly:0,   active:true,  hasPnl:false},
+  ],
+  lastUpdated: "15/06/2026",
 };
 
-// State
-let data = JSON.parse(localStorage.getItem("henzo_portfolio") || "null") || DEFAULT_DATA;
-let currentTab = "dashboard";
-let editingId = null;
+let data = JSON.parse(localStorage.getItem("henzo_v3")||"null") || DEFAULT;
+let tab = "dashboard";
+let modal = null;
 
-// Utils
 const fmt = n => n.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";
 const fmtPct = n => (n>=0?"+":"")+n.toFixed(2)+" %";
-const perf = (v,i) => ((v-i)/i)*100;
-const all = () => [...data.cto, ...data.pea];
-const totalValue = () => all().reduce((s,i)=>s+i.value,0);
-const totalInvested = () => all().reduce((s,i)=>s+i.invested,0);
-const ctoValue = () => data.cto.reduce((s,i)=>s+i.value,0);
-const peaValue = () => data.pea.reduce((s,i)=>s+i.value,0);
-const monthlyTotal = () => all().reduce((s,i)=>s+i.monthly,0);
+const pct = (v,i) => i>0?((v-i)/i)*100:0;
+const all = () => [...data.cto,...data.pea,...data.amundi,...data.ca];
+const TV = () => all().reduce((s,i)=>s+i.value,0);
+const TI = () => all().reduce((s,i)=>s+i.invested,0);
+const MT = () => all().filter(i=>i.monthly>0).reduce((s,i)=>s+i.monthly,0);
+const secTotal = s => data[s].reduce((a,i)=>a+i.value,0);
 
-function saveData() {
+function save(){
   data.lastUpdated = new Date().toLocaleDateString("fr-FR");
-  localStorage.setItem("henzo_portfolio", JSON.stringify(data));
-  const toast = document.getElementById("toast");
-  toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),1500);
+  localStorage.setItem("henzo_v3",JSON.stringify(data));
+  const t=document.getElementById("toast");
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),1500);
 }
 
-function project(pv, pmt, rateAnnual, years) {
-  const r = rateAnnual/100/12, n = years*12;
-  return pv*Math.pow(1+r,n) + pmt*(Math.pow(1+r,n)-1)/r;
+function project(pv,pmt,rate,yrs){
+  const r=rate/100/12,n=yrs*12;
+  return pv*Math.pow(1+r,n)+pmt*(Math.pow(1+r,n)-1)/r;
 }
-function netCTO(gross, invested) { return gross - (gross-invested)*0.30; }
-function netPEA(gross, invested) { return gross - (gross-invested)*0.172; }
 
-// Render
-function render() {
-  const tv = totalValue(), ti = totalInvested(), tg = tv-ti, tp = perf(tv,ti);
-  const cv = ctoValue(), pv = peaValue(), mt = monthlyTotal();
-
-  let content = "";
-
-  if(currentTab === "dashboard") {
-    const activeItems = all().filter(i=>i.monthly>0);
-    content = `
-      <div class="section">
-        <div class="section-title">Répartition</div>
-        <div class="split-row">
-          <div class="split-card green-border">
-            <div class="meta-label">CTO Trade Republic</div>
-            <div class="meta-value green">${fmt(cv)}</div>
-            <div style="font-size:0.68rem;color:#555;margin-top:2px">${((cv/tv)*100).toFixed(0)}% du total</div>
-            <div class="progress-bar"><div class="progress-fill" style="width:${((cv/tv)*100).toFixed(0)}%"></div></div>
-          </div>
-          <div class="split-card blue-border">
-            <div class="meta-label">PEA Trade Republic</div>
-            <div class="meta-value" style="color:#00bcd4">${fmt(pv)}</div>
-            <div style="font-size:0.68rem;color:#555;margin-top:2px">${((pv/tv)*100).toFixed(0)}% du total</div>
-            <div class="progress-bar"><div class="progress-fill" style="width:${((pv/tv)*100).toFixed(0)}%"></div></div>
-          </div>
+function renderCard(section,item){
+  const p = item.hasPnl ? pct(item.value,item.invested) : null;
+  const gain = item.value - item.invested;
+  const perfHtml = p!==null
+    ? `<div class="card-perf ${p>=0?'up':'neutral'}">${fmtPct(p)}</div>`
+    : `<div class="card-perf neutral">Taux réglementé</div>`;
+  const gainHtml = p!==null && item.value>0
+    ? `<span class="gain-text ${gain>=0?'up':'neutral'}">${gain>=0?"▲":"▼"} ${fmt(Math.abs(gain))}</span>`
+    : `<span class="gain-text neutral">À renseigner</span>`;
+  const monHtml = item.monthly>0
+    ? `<span class="monthly-badge on">+${item.monthly}€/mois</span>`
+    : `<span class="monthly-badge">Pas de DCA</span>`;
+  return `
+  <div class="card" onclick="openModal('${section}','${item.id}')">
+    <div class="card-inner">
+      <div class="card-top">
+        <div>
+          <div class="card-name">${item.name}</div>
+          <span class="card-tag ${item.tagType}">${item.tag}</span>
         </div>
-
-        <div class="section-title">DCA mensuel</div>
-        <div class="monthly-card">
-          ${activeItems.map(i=>`
-            <div class="monthly-row">
-              <span>${i.name}</span>
-              <span style="font-size:0.85rem;font-weight:700;color:#00e676">${i.monthly}€/mois</span>
-            </div>`).join("")}
-          <div class="monthly-total-row">
-            <span style="font-size:0.85rem;font-weight:700;color:#fff">Total</span>
-            <span style="font-size:1rem;font-weight:800;color:#fff">${mt}€/mois</span>
-          </div>
+        <div class="card-right">
+          <div class="card-value">${item.value>0?fmt(item.value):"— €"}</div>
+          ${perfHtml}
         </div>
+      </div>
+      <div class="card-bottom">${gainHtml}${monHtml}</div>
+    </div>
+  </div>`;
+}
 
-        <div class="section-title" style="margin-top:20px">Performance par ligne</div>
-        ${all().map(i=>{
-          const p=perf(i.value,i.invested);
-          const col = p>50?"#00e676":p>15?"#69c690":"#aaa";
-          return `<div class="perf-row"><span>${i.name}</span><span class="perf-val" style="color:${col}">${fmtPct(p)}</span></div>`;
-        }).join("")}
-      </div>`;
+function renderModal(){
+  if(!modal) return "";
+  const item = data[modal.section].find(i=>i.id===modal.id);
+  if(!item) return "";
+  return `
+  <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-title">${item.name}</div>
+      <div class="modal-sub">Appuie sur un champ et saisis la valeur</div>
+      <div class="modal-field">
+        <label>Valeur actuelle (€)</label>
+        <input type="number" id="m-value" value="${item.value||''}" step="0.01" placeholder="Ex: 1499.09"/>
+        <div class="modal-hint">Valeur affichée sur Trade Republic / Amundi / CA</div>
+      </div>
+      <div class="modal-field">
+        <label>Total investi (€)</label>
+        <input type="number" id="m-invested" value="${item.invested||''}" step="0.01" placeholder="Ex: 1283.33"/>
+        <div class="modal-hint">Somme totale que tu as réellement versée</div>
+      </div>
+      <div class="modal-field">
+        <label>Versement mensuel (€)</label>
+        <input type="number" id="m-monthly" value="${item.monthly||''}" step="1" placeholder="0"/>
+        <div class="modal-hint">Montant du plan d'épargne automatique</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-close" onclick="closeModal()">Annuler</button>
+        <button class="btn-save" onclick="saveModal('${modal.section}','${modal.id}')">Enregistrer</button>
+      </div>
+    </div>
+  </div>`;
+}
 
-  } else if(currentTab === "cto") {
-    content = `<div class="section">
-      <div class="section-title">Compte-Titres · ${fmt(cv)}</div>
-      ${data.cto.map(item=>renderCard("cto",item)).join("")}
-    </div>`;
+function openModal(s,id){ modal={section:s,id}; render(); setTimeout(()=>document.getElementById("m-value")?.focus(),50); }
+function closeModal(){ modal=null; render(); }
+function saveModal(s,id){
+  const v=parseFloat(document.getElementById("m-value").value)||0;
+  const inv=parseFloat(document.getElementById("m-invested").value)||0;
+  const mon=parseFloat(document.getElementById("m-monthly").value)||0;
+  data[s]=data[s].map(i=>i.id===id?{...i,value:v,invested:inv,monthly:mon}:i);
+  modal=null; save(); render();
+}
 
-  } else if(currentTab === "pea") {
-    content = `<div class="section">
-      <div class="section-title">PEA · ${fmt(pv)}</div>
-      ${data.pea.map(item=>renderCard("pea",item)).join("")}
-      <div class="info-box">💡 Objectif : passer à 200€/mois · Plafond : 150 000€ · Fiscalité 17,2% seulement après 5 ans · Horloge lancée depuis déc. 2025</div>
-    </div>`;
+function render(){
+  const tv=TV(),ti=TI(),tg=tv-ti,tp=pct(tv,ti),mt=MT();
+  let content="";
+  const sections=[
+    {key:"cto",   label:"CTO",              color:"#00e676"},
+    {key:"pea",   label:"PEA",              color:"#00bcd4"},
+    {key:"amundi",label:"Amundi (Thales)",  color:"#a78bfa"},
+    {key:"ca",    label:"Crédit Agricole",  color:"#ff9800"},
+  ];
 
-  } else if(currentTab === "projections") {
-    const nasdaqItem = data.cto.find(i=>i.id==="nasdaq");
-    const semisItem  = data.cto.find(i=>i.id==="semis");
-    const peaItem    = data.pea.find(i=>i.id==="world_pea");
-    const nm=120, sm=30, pm=200;
-    const scenarios = [
-      {key:"pessimiste", label:"Pessimiste", nasdaq:6,  semis:5,  pea:5},
-      {key:"realiste",   label:"Réaliste",   nasdaq:12, semis:13, pea:8},
-      {key:"optimiste",  label:"Optimiste",  nasdaq:15, semis:18, pea:10},
-    ];
-    content = `<div class="section">
-      <div class="section-title">Projections à 20 ans</div>
-      <div style="font-size:0.68rem;color:#555;margin-bottom:16px">120€/mois Nasdaq · 30€/mois Semis · 200€/mois PEA · Capitaux actuels inclus</div>
-      ${scenarios.map(sc=>{
-        const nGross = project(nasdaqItem.value, nm, sc.nasdaq, 20);
-        const sGross = project(semisItem.value,  sm, sc.semis,  20);
-        const pGross = project(peaItem.value,    pm, sc.pea,    20);
-        const nInv = nasdaqItem.value + nm*240;
-        const sInv = semisItem.value  + sm*240;
-        const pInv = peaItem.value    + pm*240;
-        const total = netCTO(nGross,nInv) + netCTO(sGross,sInv) + netPEA(pGross,pInv);
-        return `
-        <div class="proj-card ${sc.key}">
-          <div class="proj-header">
-            <span class="proj-label">${sc.label}</span>
-            <span class="proj-total ${sc.key}">${Math.round(total/1000)} k€ net</span>
+  if(tab==="dashboard"){
+    const active=all().filter(i=>i.monthly>0);
+    const investable=[...data.cto,...data.pea].filter(i=>i.value>0);
+    content=`<div class="section">
+      <div class="section-title">Répartition</div>
+      ${sections.map(s=>{
+        const sv=secTotal(s.key);
+        const sp=tv>0?((sv/tv)*100).toFixed(0):0;
+        return `<div style="background:#111;border-radius:14px;padding:14px;margin-bottom:8px;border-left:3px solid ${s.color}">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:.63rem;color:#555;text-transform:uppercase;letter-spacing:1px">${s.label}</div>
+              <div style="font-size:1rem;font-weight:800;color:#fff;margin-top:2px">${sv>0?fmt(sv):"À renseigner"}</div>
+            </div>
+            <div style="font-size:1.4rem;font-weight:800;color:${s.color}">${sv>0?sp+"%":"—"}</div>
           </div>
-          <div class="proj-line"><span>Nasdaq (${sc.nasdaq}%/an · flat tax 30%)</span><span>${Math.round(netCTO(nGross,nInv)/1000)}k€</span></div>
-          <div class="proj-line"><span>Semis (${sc.semis}%/an · flat tax 30%)</span><span>${Math.round(netCTO(sGross,sInv)/1000)}k€</span></div>
-          <div class="proj-line"><span>PEA World (${sc.pea}%/an · PS 17,2%)</span><span>${Math.round(netPEA(pGross,pInv)/1000)}k€</span></div>
+          ${sv>0?`<div class="progress-bar"><div class="progress-fill" style="width:${sp}%;background:${s.color}"></div></div>`:""}
         </div>`;
       }).join("")}
+      <div class="section-title" style="margin-top:20px">DCA mensuel</div>
+      <div class="monthly-card">
+        ${active.length>0?active.map(i=>`
+          <div class="monthly-row">
+            <span style="font-size:.8rem;color:#ccc">${i.name}</span>
+            <span style="font-size:.82rem;font-weight:700;color:#00e676">+${i.monthly}€</span>
+          </div>`).join(""):`<div style="font-size:.78rem;color:#555;padding:8px 0">Aucun versement automatique configuré</div>`}
+        <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid #333;margin-top:4px">
+          <span style="font-size:.85rem;font-weight:700;color:#fff">Total mensuel</span>
+          <span style="font-size:1rem;font-weight:800;color:#fff">${mt}€</span>
+        </div>
+      </div>
+      ${investable.length>0?`
+      <div class="section-title" style="margin-top:20px">Performance</div>
+      ${investable.map(i=>{
+        const p=pct(i.value,i.invested);
+        const col=p>50?"#00e676":p>20?"#69d490":p>0?"#aaa":"#ff5252";
+        return `<div class="perf-row"><span>${i.name}</span><span style="font-size:.8rem;font-weight:700;color:${col}">${fmtPct(p)}</span></div>`;
+      }).join("")}`:""}
+    </div>`;
+
+  } else if(tab==="cto"){
+    content=`<div class="section">
+      <div class="section-title">Compte-Titres · ${fmt(secTotal("cto"))}</div>
+      <div class="info-box green" style="margin-bottom:12px">Appuie sur une ligne pour mettre à jour valeur, capital investi et DCA mensuel.</div>
+      ${data.cto.map(i=>renderCard("cto",i)).join("")}
+    </div>`;
+
+  } else if(tab==="pea"){
+    content=`<div class="section">
+      <div class="section-title">PEA · ${fmt(secTotal("pea"))}</div>
+      ${data.pea.map(i=>renderCard("pea",i)).join("")}
+      <div class="info-box green">💡 Objectif : 200€/mois · Plafond 150 000€ · Fiscalité 17,2% après 5 ans · Horloge lancée déc. 2025 → libre déc. 2030</div>
+    </div>`;
+
+  } else if(tab==="amundi"){
+    content=`<div class="section">
+      <div class="section-title">Épargne Salariale Thales · ${fmt(secTotal("amundi"))}</div>
+      ${data.amundi.map(i=>renderCard("amundi",i)).join("")}
+      <div class="info-box purple">💜 PEE = déblocable après 5 ans ou événement (mariage, CDI…) · PERECO = retraite · Abondement Thales ~352€/an · Mets à jour après chaque relevé Amundi</div>
+    </div>`;
+
+  } else if(tab==="ca"){
+    content=`<div class="section">
+      <div class="section-title">Crédit Agricole · ${fmt(secTotal("ca"))}</div>
+      ${data.ca.map(i=>renderCard("ca",i)).join("")}
+      <div class="info-box orange">🏦 Livret Jeune : taux 3% max 1 600€ jusqu'à 25 ans · Livret A : taux 2,4% · Capital garanti · Épargne de précaution</div>
+    </div>`;
+
+  } else if(tab==="projections"){
+    const n=data.cto.find(i=>i.id==="nasdaq");
+    const s=data.cto.find(i=>i.id==="semis");
+    const p=data.pea.find(i=>i.id==="world_pea");
+    const nm=120,sm=30,pm=200;
+    const sc=[
+      {key:"pessimiste",label:"Pessimiste",nr:6, sr:5, pr:5},
+      {key:"realiste",  label:"Réaliste",  nr:12,sr:13,pr:8},
+      {key:"optimiste", label:"Optimiste", nr:15,sr:18,pr:10},
+    ];
+    content=`<div class="section">
+      <div class="section-title">Projections à 20 ans</div>
+      <div style="font-size:.68rem;color:#555;margin-bottom:16px">Hypothèse : 120€ Nasdaq · 30€ Semis · 200€ PEA · Capitaux actuels inclus</div>
+      ${sc.map(sc=>{
+        const nG=project(n.value,nm,sc.nr,20),nI=n.value+nm*240;
+        const sG=project(s.value,sm,sc.sr,20),sI=s.value+sm*240;
+        const pG=project(p.value,pm,sc.pr,20),pI=p.value+pm*240;
+        const nN=nG-(nG-nI)*.30,sN=sG-(sG-sI)*.30,pN=pG-(pG-pI)*.172;
+        const tot=nN+sN+pN;
+        return `<div class="proj-card ${sc.key}">
+          <div class="proj-header">
+            <span class="proj-label">${sc.label}</span>
+            <span class="proj-total ${sc.key}">${Math.round(tot/1000)}k€ net</span>
+          </div>
+          <div class="proj-line"><span>Nasdaq (${sc.nr}%/an · flat tax 30%)</span><span>${Math.round(nN/1000)}k€</span></div>
+          <div class="proj-line"><span>Semis (${sc.sr}%/an · flat tax 30%)</span><span>${Math.round(sN/1000)}k€</span></div>
+          <div class="proj-line"><span>PEA World (${sc.pr}%/an · PS 17,2%)</span><span>${Math.round(pN/1000)}k€</span></div>
+        </div>`;
+      }).join("")}
+      <div class="info-box green" style="margin-top:4px">+ Amundi et Livrets non inclus (variables). Chaque +50€/mois supplémentaire = ~30-60k€ de plus selon scénario.</div>
     </div>`;
   }
 
-  const tv2 = totalValue(), tg2 = tv2-totalInvested(), tp2 = perf(tv2,totalInvested());
-  document.getElementById("app").innerHTML = `
+  document.getElementById("app").innerHTML=`
     <div class="header">
       <div class="hero-label">Patrimoine total</div>
-      <div class="hero-value">${fmt(tv2)}</div>
-      <div class="hero-badge">
-        <span>▲ ${fmtPct(tp2)} · +${fmt(tg2)}</span>
-      </div>
+      <div class="hero-value">${fmt(tv)}</div>
+      <div class="hero-badge"><span>▲ ${fmtPct(tp)} · +${fmt(tg)}</span></div>
       <div class="meta-row">
-        <div class="meta-card">
-          <div class="meta-label">Investi</div>
-          <div class="meta-value">${fmt(totalInvested())}</div>
-        </div>
-        <div class="meta-card">
-          <div class="meta-label">DCA/mois</div>
-          <div class="meta-value green">${monthlyTotal()}€</div>
-        </div>
-        <div class="meta-card">
-          <div class="meta-label">Mis à jour</div>
-          <div class="meta-value" style="font-size:0.78rem">${data.lastUpdated}</div>
-        </div>
+        <div class="meta-card"><div class="meta-label">Investi</div><div class="meta-value">${fmt(ti)}</div></div>
+        <div class="meta-card"><div class="meta-label">DCA/mois</div><div class="meta-value green">${mt}€</div></div>
+        <div class="meta-card"><div class="meta-label">Màj</div><div class="meta-value" style="font-size:.72rem">${data.lastUpdated}</div></div>
       </div>
       <div class="tabs">
-        <button class="tab ${currentTab==="dashboard"?"active":""}" onclick="setTab('dashboard')">Aperçu</button>
-        <button class="tab ${currentTab==="cto"?"active":""}" onclick="setTab('cto')">CTO</button>
-        <button class="tab ${currentTab==="pea"?"active":""}" onclick="setTab('pea')">PEA</button>
-        <button class="tab ${currentTab==="projections"?"active":""}" onclick="setTab('projections')">Projections</button>
+        <button class="tab ${tab==="dashboard"?"active":""}" onclick="setTab('dashboard')">Aperçu</button>
+        <button class="tab ${tab==="cto"?"active":""}" onclick="setTab('cto')">CTO</button>
+        <button class="tab ${tab==="pea"?"active":""}" onclick="setTab('pea')">PEA</button>
+        <button class="tab ${tab==="amundi"?"active":""}" onclick="setTab('amundi')">Amundi</button>
+        <button class="tab ${tab==="ca"?"active":""}" onclick="setTab('ca')">Livrets</button>
+        <button class="tab ${tab==="projections"?"active":""}" onclick="setTab('projections')">Projections</button>
       </div>
     </div>
     ${content}
-  `;
+    ${renderModal()}`;
 }
 
-function renderCard(section, item) {
-  const p = perf(item.value, item.invested);
-  const gain = item.value - item.invested;
-  const isEditing = editingId === item.id;
-  return `
-    <div class="card">
-      <div class="card-inner">
-        <div class="card-top">
-          <div>
-            <div class="card-name">${item.name}</div>
-            <span class="card-tag ${item.active?"active":"inactive"}">${item.tag}</span>
-          </div>
-          <div class="card-right">
-            <div class="card-value">${fmt(item.value)}</div>
-            <div class="card-perf ${p>=0?"up":"down"}">${fmtPct(p)}</div>
-          </div>
-        </div>
-        <div class="card-bottom">
-          <span class="gain-text ${gain>=0?"up":"down"}">${gain>=0?"▲":"▼"} ${fmt(Math.abs(gain))}</span>
-          <button class="edit-btn" onclick="startEdit('${item.id}','${item.value}')">Mettre à jour</button>
-        </div>
-      </div>
-      ${isEditing ? `
-      <div class="edit-row">
-        <input type="number" id="edit-input" value="${item.value}" placeholder="Valeur €" step="0.01" />
-        <button class="btn-confirm" onclick="confirmEdit('${section}','${item.id}')">OK</button>
-        <button class="btn-cancel" onclick="cancelEdit()">✕</button>
-      </div>` : ""}
-    </div>`;
-}
-
-function setTab(tab) { currentTab=tab; editingId=null; render(); }
-
-function startEdit(id, val) {
-  editingId = editingId===id ? null : id;
-  render();
-  if(editingId) {
-    setTimeout(()=>{
-      const inp = document.getElementById("edit-input");
-      if(inp){inp.focus();inp.select();}
-    },50);
-  }
-}
-
-function confirmEdit(section, id) {
-  const val = parseFloat(document.getElementById("edit-input").value);
-  if(isNaN(val)||val<=0) return;
-  data[section] = data[section].map(i=>i.id===id?{...i,value:val}:i);
-  editingId=null;
-  saveData();
-  render();
-}
-
-function cancelEdit() { editingId=null; render(); }
-
-// Enter key support
-document.addEventListener("keydown", e=>{
-  if(e.key==="Enter"&&editingId){
-    const parts=editingId.split("_");
-    const section = data.pea.find(i=>i.id===editingId)?"pea":"cto";
-    confirmEdit(section,editingId);
-  }
-});
-
+function setTab(t){tab=t;modal=null;render()}
 render();
 </script>
 </body>
